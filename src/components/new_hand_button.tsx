@@ -11,8 +11,8 @@ interface NewHandButtonProps {
 export default function NewHandButton({ onGenerate }: NewHandButtonProps) {
     return (
         <Button
-            label="Nova ruka"
-            endIcon="shuffle"
+            label="New Hand"
+            endIcon="hand"
             onClick={() => onGenerate(generateRandomHand())}
         />
     );

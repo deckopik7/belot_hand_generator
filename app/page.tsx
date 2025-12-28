@@ -6,15 +6,23 @@ import Heading from "@/src/components/heading";
 import Card from "@/src/components/card";
 import NewHandButton from "@/src/components/new_hand_button";
 import { CardData } from "@/src/types/card_types";
-import { generateRandomHand } from "@/src/utils/new_hand_logic";
+import { generateRandomHand, sortHand } from "@/src/utils/new_hand_logic";
+import Button from "@/src/components/button";
 
 export default function Home() {
-    const [hand, setHand] = useState<CardData[]>([]);
+    const [fullHand, setFullHand] = useState<CardData[]>([]);
+    const [isRevealed, setIsRevealed] = useState(false);
+
+    const handleNewHand = (newHand: CardData[]) => {
+        setFullHand(newHand);
+        setIsRevealed(false);
+    }
 
     useEffect(() => {
-        const initialHand = generateRandomHand();
-        setHand(initialHand);
+        handleNewHand(generateRandomHand());
     }, []);
+
+    const firstSix = sortHand(fullHand.slice(0, 6));
 
     return (
         <main>
@@ -23,17 +31,33 @@ export default function Home() {
             </Heading>
 
             <div>
-                <NewHandButton onGenerate={setHand} />
+                <NewHandButton onGenerate={handleNewHand} />
+
+                <Button
+                    label="Reveal Talon"
+                    color={isRevealed ? "secondary" : "primary"}
+                    onClick={() => {
+                        if (isRevealed) return;
+                        setIsRevealed(true);
+                    }}
+                    endIcon={isRevealed ? "eye" : "eye-off"}
+                />
             </div>
 
             <Grid columns={8} autoResponsive gap="sm">
-                {hand.map((card, index) => (
-                    <Card
-                        key={`${card.suit}-${card.value}-${index}`}
-                        suit={card.suit}
-                        value={card.value}
-                    />
-                ))}
+                {isRevealed ? (
+                    sortHand(fullHand).map((card, i) => (
+                        <Card key={i} suit={card.suit} value={card.value} />
+                    ))
+                ) : (
+                    <>
+                        {firstSix.map((card, i) => (
+                            <Card key={i} suit={card.suit} value={card.value} />
+                        ))}
+                        <Card isFaceDown />
+                        <Card isFaceDown />
+                    </>
+                )}
             </Grid>
         </main>
     );
