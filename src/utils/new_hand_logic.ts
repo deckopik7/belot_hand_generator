@@ -21,7 +21,7 @@ export const sortHand = (hand: CardData[]): CardData[] => {
   });
 };
 
-export const generateRandomHand = (count: number = 8): CardData[] => {
+export const generateRandomHand = (): CardData[] => {
   const suits: Suit[] = ["S", "D", "H", "C"];
   const values: CardValue[] = ["7", "8", "9", "10", "J", "Q", "K", "A"];
 
@@ -38,5 +38,8 @@ export const generateRandomHand = (count: number = 8): CardData[] => {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  return shuffled.slice(0, count);
+  shuffled[6].isTalon = true;
+  shuffled[7].isTalon = true;
+
+  return shuffled.slice(0, 8);
 };

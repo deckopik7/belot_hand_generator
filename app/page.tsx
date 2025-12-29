@@ -4,18 +4,19 @@ import { useState, useEffect } from "react";
 import Grid from "@/src/components/grid";
 import Heading from "@/src/components/heading";
 import Card from "@/src/components/card";
-import NewHandButton from "@/src/components/new_hand_button";
-import { CardData } from "@/src/types/card_types";
+import { CardData, TrumpSelection } from "@/src/types/card_types";
 import { generateRandomHand, sortHand } from "@/src/utils/new_hand_logic";
-import Button from "@/src/components/button";
+import Container from "@/src/components/container";
+import Controls from "@/src/components/controls";
+import SelectionText from "@/src/components/selection_text";
 
 export default function Home() {
     const [fullHand, setFullHand] = useState<CardData[]>([]);
-    const [isRevealed, setIsRevealed] = useState(false);
+    const [trumpSelection, setTrumpSelection] = useState<TrumpSelection | null>(null);
 
     const handleNewHand = (newHand: CardData[]) => {
         setFullHand(newHand);
-        setIsRevealed(false);
+        setTrumpSelection(null);
     }
 
     useEffect(() => {
@@ -25,40 +26,30 @@ export default function Home() {
     const firstSix = sortHand(fullHand.slice(0, 6));
 
     return (
-        <main>
+        <Container>
             <Heading tag="h1" fontClass="display1-bold">
                 Belot Hand Generator
             </Heading>
 
-            <div>
-                <NewHandButton onGenerate={handleNewHand} />
+            <Controls trumpSelection={trumpSelection} handleNewHand={handleNewHand} setTrump={setTrumpSelection}></Controls>
 
-                <Button
-                    label="Reveal Talon"
-                    color={isRevealed ? "secondary" : "primary"}
-                    onClick={() => {
-                        if (isRevealed) return;
-                        setIsRevealed(true);
-                    }}
-                    endIcon={isRevealed ? "eye" : "eye-off"}
-                />
-            </div>
+            <SelectionText trumpSelection={trumpSelection}></SelectionText>
 
             <Grid columns={8} autoResponsive gap="sm">
-                {isRevealed ? (
+                {trumpSelection !== null ? (
                     sortHand(fullHand).map((card, i) => (
-                        <Card key={i} suit={card.suit} value={card.value} />
+                        <Card key={i} suit={card.suit} value={card.value} isTalon={card.isTalon} />
                     ))
                 ) : (
                     <>
                         {firstSix.map((card, i) => (
                             <Card key={i} suit={card.suit} value={card.value} />
                         ))}
-                        <Card isFaceDown />
-                        <Card isFaceDown />
+                        <Card isFaceDown isTalon />
+                        <Card isFaceDown isTalon />
                     </>
                 )}
             </Grid>
-        </main>
+        </Container>
     );
 }
