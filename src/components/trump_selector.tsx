@@ -2,15 +2,15 @@
 
 import Grid from "@/src/components/grid";
 import Image from "@/src/components/image";
-import { TrumpSelection, Suit } from "@/src/types/card_types";
+import { TrumpSelection, Suit } from "@/src/types/types";
 import Button from "@/src/components/button";
 
 interface TrumpSelectorProps {
     trumpSelection: TrumpSelection | null;
-    onSelect: (suit: TrumpSelection) => void;
+    setTrumpSelection: (suit: TrumpSelection) => void;
 }
 
-export default function TrumpSelector({ trumpSelection, onSelect }: TrumpSelectorProps) {
+export default function TrumpSelector({ trumpSelection, setTrumpSelection }: TrumpSelectorProps) {
     const suits: Suit[] = ['S', 'D', 'H', 'C'];
 
     return (
@@ -22,10 +22,10 @@ export default function TrumpSelector({ trumpSelection, onSelect }: TrumpSelecto
                     alt={suit}
                     aspect="1/1"
                     objectFit="contain"
-                    onClick={() => { if (trumpSelection !== null) return; onSelect(suit) }}
+                    onClick={() => { if (trumpSelection !== null) return; setTrumpSelection(suit) }}
                 />
             ))}
-            <Button label="Pass" onClick={() => { if (trumpSelection !== null) return; onSelect("Pass") }} />
+            <Button label="Pass" onClick={() => { if (trumpSelection !== null) return; setTrumpSelection("Pass") }} />
         </Grid>
     );
 }

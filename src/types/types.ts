@@ -6,4 +6,6 @@ export interface CardData {
   suit: Suit;
   value: CardValue;
   isTalon?: boolean;
+  isLocked?: boolean;
+  isFaceDown?: boolean;
 }

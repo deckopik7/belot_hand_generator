@@ -1,4 +1,4 @@
-import { Suit, TrumpSelection } from "@/src/types/card_types";
+import { Suit, TrumpSelection } from "@/src/types/types";
 import Container from "@/src/components/container";
 import Text from "@/src/components/text";
 
