@@ -13,7 +13,7 @@ export default function Card({ suit, value, isTalon, isLocked, isFaceDown, onTog
         : `/cards/${suit}_${value}.png`;
 
     return (
-        <Container className="relative" onClick={onToggleLock}>
+        <Container className="relative cursor-pointer" onClick={onToggleLock}>
             <Image
                 src={imagePath}
                 alt={isFaceDown ? "Hidden card" : `${value} of ${suit}`}
@@ -22,23 +22,23 @@ export default function Card({ suit, value, isTalon, isLocked, isFaceDown, onTog
                 objectFit="contain"
             />
 
-            <Container className="absolute" style={{ top: 0, right: 0 }}>
+            <Container className="absolute flex-v-center gap-3xs" style={{ top: 2, right: 2 }}>
                 {isLocked && (
                     <Icon
                         name="lock"
                         display="block"
-                        color="primary"
+                        color="warning"
                         fontClass="title1"
-                        strokeWidth={4}
+                        strokeWidth={3}
                     />
                 )}
-                {isTalon && (
+                {!isFaceDown && isTalon && (
                     <Icon
                         name="type"
                         display="block"
-                        color="primary"
+                        color="info"
                         fontClass="title1"
-                        strokeWidth={4}
+                        strokeWidth={3}
                     />
                 )}
             </Container>

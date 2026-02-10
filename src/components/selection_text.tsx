@@ -9,13 +9,13 @@ interface SelectionTextProps {
 export default function SelectionText({ trumpSelection }: SelectionTextProps) {
     const suitNames: Record<Suit, string> = { S: "Spades", D: "Diamonds", H: "Hearts", C: "Clubs" };
 
+    const message = trumpSelection === "Pass"
+        ? "You chose to Pass"
+        : trumpSelection
+            ? `You chose ${suitNames[trumpSelection]}`
+            : "Choose a Trump";
+
     return <Container>
-        {trumpSelection === "Pass" ? (
-            <Text>You chose to pass</Text>
-        ) : trumpSelection !== null ? (
-            <Text>You chose {suitNames[trumpSelection]}</Text>
-        ) : (
-            <Text>Choose a trump</Text>
-        )}
+        <Text className="mb-sm" fontClass="title1-bold" color="onsurface">{message}</Text>
     </Container>;
 }
